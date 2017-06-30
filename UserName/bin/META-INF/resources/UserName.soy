@@ -1,0 +1,32 @@
+{namespace ddm}
+
+/**
+ * Prints the form field.
+ *
+ * @param label
+ * @param name
+ * @param required
+ * @param showLabel
+ * @param tip
+ * @param value
+ */
+{template .UserName autoescape="deprecated-contextual"}
+	<div class="form-group UserName-form-field" data-fieldname="{$name}">
+		{if $showLabel}
+			<label class="control-label">
+				{$label}
+
+				{if $required}
+					<span class="icon-asterisk text-warning"></span>
+				{/if}
+			</label>
+
+			{if $tip}
+				<p class="liferay-ddm-form-field-tip">{$tip}</p>
+			{/if}
+		{/if}
+
+		<input class="field form-control" id="{$name}" name="{$name}" readonly type="text" value="{$value}">
+		/** add class="hide" to hide field but still collect data */
+	</div>
+{/template}

@@ -10,7 +10,7 @@
 4. Docker Hub account
 
 ### Steps to setup
-1. Login to Docker Hub via CLI
+1. Login to Docker Hub via CLI (Not necessary at this point)
 	- `docker login`
 2. Check out this repos
 	- Or download and unzip

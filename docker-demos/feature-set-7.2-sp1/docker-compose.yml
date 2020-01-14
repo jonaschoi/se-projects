@@ -29,7 +29,6 @@ services:
       - 8080:8080
       - 127.0.0.1:11311:11311
   mysql:
-    build: mysql
     image: jonaschoi/fs72sp1_mysql:latest
     container_name: mysql
     networks:

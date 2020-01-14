@@ -28,6 +28,8 @@ services:
     ports: 
       - 8080:8080
       - 127.0.0.1:11311:11311
+    volumes:
+      - liferay-dxp:/opt/liferay/data
   mysql:
     image: jonaschoi/fs72sp1_mysql:latest
     container_name: mysql
@@ -40,6 +42,10 @@ services:
       MYSQL_DATABASE: fs72sp1
     volumes:
       - ./mysql/config/:/docker-entrypoint-initdb.d
+      - mysql:/var/lib/mysql
 networks:
   fs72sp1:
     name: fs72sp1
+volumes:
+  liferay-dxp:
+  mysql:

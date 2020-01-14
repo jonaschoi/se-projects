@@ -1,0 +1,46 @@
+version: "3.7"
+services:
+  elasticsearch:
+    image: jonaschoi/fs72sp1_elasticsearch:latest
+    container_name: elasticsearch
+    environment: 
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+    networks:
+      - fs72sp1
+    ports:
+      - 9200:9200
+      - 9300:9300
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  tomcat:
+    image: jonaschoi/fs72sp1_tomcat:latest
+    container_name: tomcat
+    depends_on:
+      - elasticsearch
+      - mysql
+    environment:
+      LIFERAY_RETRY_PERIOD_JDBC_PERIOD_ON_PERIOD_STARTUP_PERIOD_DELAY: 10
+      LIFERAY_RETRY_PERIOD_JDBC_PERIOD_ON_PERIOD_STARTUP_PERIOD_MAX_PERIOD_RETRIES: 10
+    networks: 
+      - fs72sp1
+    ports: 
+      - 8080:8080
+      - 127.0.0.1:11311:11311
+  mysql:
+    build: mysql
+    image: jonaschoi/fs72sp1_mysql:latest
+    container_name: mysql
+    networks:
+      - fs72sp1
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: fs72sp1
+    volumes:
+      - ./mysql/config/:/docker-entrypoint-initdb.d
+networks:
+  fs72sp1:
+    name: fs72sp1

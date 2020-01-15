@@ -8,6 +8,7 @@
 2. ~4 GB of drive space
 3. 8 GB of RAM
 4. Docker Hub account
+5. Internet connection that is decent.
 
 ### Steps to setup and start up
 1. Login to Docker Hub via CLI (Not necessary at this point)
@@ -16,6 +17,7 @@
 	- Or download and unzip
 3. Start with Docker Compose in detached mode
 	- `docker-compose up -d`
+	- This will download the images if they are not present. Good internet is highly recommended.
 4. View Docker Logs
 	- `docker-compose logs -f`
 5. When logs show startup complete, go to the URL

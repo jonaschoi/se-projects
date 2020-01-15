@@ -1,7 +1,7 @@
 # Docker Demos
 
 ## Feature Set 7.2 SP1
-- This contains the docke-compose and SQL file necessary for the data of the Liferay DXP 7.2 SP1 Feature Set bundle.
+- This contains the docker-compose and SQL file necessary for the data of the Liferay DXP 7.2 SP1 Feature Set bundle.
 
 ### Requirements
 1. Docker

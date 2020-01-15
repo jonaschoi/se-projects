@@ -26,4 +26,7 @@
 	- `docker-compose down`
 3. Shutdown and reset the bundle
 	- `docker-compose down -v`
-	- This deletes any volumes that are created for the bundle. On next startup, the MySQL will reimport, thus reverting to the original state.
+	- This deletes any volumes that are created for the bundle. On next startup, the MySQL will reimport, thus reverting to the original state. There is no going back if you do this, so make sure you really want to delete all the additional data.
+	
+### Deploying a Plugin
+1. A directory called `deploy` will be created. Simply copy your plugin into that directory.

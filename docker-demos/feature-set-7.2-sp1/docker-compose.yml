@@ -29,7 +29,9 @@ services:
       - 8080:8080
       - 127.0.0.1:11311:11311
     volumes:
-      - liferay-dxp:/opt/liferay/data
+      - ./deploy:/opt/liferay/deploy
+      - liferay-data:/opt/liferay/data
+      - liferay-plugins:/opt/liferay/osgi
   mysql:
     image: jonaschoi/fs72sp1_mysql:latest
     container_name: mysql
@@ -47,5 +49,6 @@ networks:
   fs72sp1:
     name: fs72sp1
 volumes:
-  liferay-dxp:
+  liferay-data:
+  liferay-plugins:
   mysql:

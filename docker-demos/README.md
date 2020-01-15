@@ -12,12 +12,14 @@
 ### Steps to setup and start up
 1. Login to Docker Hub via CLI (Not necessary at this point)
 	- `docker login`
-2. Check out this repos
+2. Check out this repos, and navigate to the directory of the desired bundle.
 	- Or download and unzip
 3. Start with Docker Compose in detached mode
 	- `docker-compose up -d`
 4. View Docker Logs
 	- `docker-compose logs -f`
+5. When logs show startup complete, go to the URL
+	- `http://localhost:8080`
 	
 ### Steps to Shutdown
 1. Exit the logs

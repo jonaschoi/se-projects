@@ -34,3 +34,4 @@
 	
 ### Deploying a Plugin
 1. A directory called `deploy` will be created. Simply copy your plugin into that directory.
+	- You will need to supply your own license key.

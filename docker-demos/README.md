@@ -13,7 +13,7 @@
 ### Steps to setup and start up
 1. Login to Docker Hub via CLI (Not necessary at this point)
 	- `docker login`
-2. Check out this repos, and navigate to the directory of the dbundle (i.e. feature-set-7.2-sp1).
+2. Check out this repos, and navigate to the directory of the bundle (i.e. feature-set-7.2-sp1).
 	- Or download and unzip
 3. Start with Docker Compose in detached mode
 	- `docker-compose up -d`
@@ -37,5 +37,6 @@
 	- You will need to supply your own license key.
 	
 ### Troubleshooting
-Q. I get a "exited with error code 137" and it all shuts down
+Q. I get a "exited with error code 137" and it all shuts down.
+
 A. This error code means that it is trying to allocated memory, but it is unable, due to not having access to more. Set your Docker Desktop to have at least 8 GB of available memory. 

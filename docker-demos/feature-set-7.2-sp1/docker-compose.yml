@@ -36,6 +36,7 @@ services:
       - elasticsearch
       - mysql
     environment:
+#      CATALINA_OPTS: "-Xms2560m -Xmx4096m"
       LIFERAY_RETRY_PERIOD_JDBC_PERIOD_ON_PERIOD_STARTUP_PERIOD_DELAY: 10
       LIFERAY_RETRY_PERIOD_JDBC_PERIOD_ON_PERIOD_STARTUP_PERIOD_MAX_PERIOD_RETRIES: 10
     networks: 
@@ -46,12 +47,18 @@ services:
     volumes:
       - ./deploy:/opt/liferay/deploy
       - liferay-data:/opt/liferay/data
-      - liferay-plugins:/opt/liferay/osgi
+      - liferay-osgi-configs:/opt/liferay/osgi/configs
+      - liferay-osgi-marketplace:/opt/liferay/osgi/marketplace
+      - liferay-osgi-modules:/opt/liferay/osgi/modules
+      - liferay-osgi-war:/opt/liferay/osgi/war
 networks:
   fs72sp1:
     name: fs72sp1
 volumes:
   elasticsearch:
   liferay-data:
-  liferay-plugins:
+  liferay-osgi-configs:
+  liferay-osgi-marketplace:
+  liferay-osgi-modules:
+  liferay-osgi-war:
   mysql:

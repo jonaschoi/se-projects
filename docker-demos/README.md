@@ -20,6 +20,8 @@
 	- This will download the images if they are not present. Good internet is highly recommended.
 4. View Docker Logs
 	- `docker-compose logs -f`
+	- If you want to view logs for just one specific container, add the container name at the end of the command. Container names can be found in the docker-compose.yml
+		`docker-compose logs -f ${CONTAINER_NAME}`
 5. When logs show startup complete, go to the URL
 	- `http://localhost:8080`
 	
@@ -31,10 +33,22 @@
 3. Shutdown and reset the bundle
 	- `docker-compose down -v`
 	- This deletes any volumes that are created for the bundle. On next startup, the MySQL will reimport, thus reverting to the original state. There is no going back if you do this, so make sure you really want to delete all the additional data.
+	- To delete a specific volume, add the volume name after the command. Volume names can be found in the docker-compose.yml
+		- `docker-compose down -v ${VOLUME_NAME}`
 	
 ### Deploying a Plugin
 1. A directory called `deploy` will be created. Simply copy your plugin into that directory.
 	- You will need to supply your own license key.
+	
+### Removing a Plugin
+1. Log into the container. Container names can be found in the docker-compose.yml
+	- `docker exec -it ${CONTAINER_NAME} bash`
+2. Navigate to the osgi/modules or osgi/marketplace directory. You will be in the `/opt/liferay` directory.
+3. Delete the specific module.
+	- `rm -f ${PLUGIN_NAME}`
+	
+### Clearing Caches
+- Cache directories are not persisted in the container and not mapped to directories, so restarting the container will clear the cache.
 	
 ### Troubleshooting
 Q. I get a "exited with error code 137" and it all shuts down.

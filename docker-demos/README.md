@@ -21,7 +21,7 @@
 4. View Docker Logs
 	- `docker-compose logs -f`
 	- If you want to view logs for just one specific container, add the container name at the end of the command. Container names can be found in the docker-compose.yml
-		`docker-compose logs -f ${CONTAINER_NAME}`
+		- `docker-compose logs -f ${CONTAINER_NAME}`
 5. When logs show startup complete, go to the URL
 	- `http://localhost:8080`
 	

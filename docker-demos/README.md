@@ -33,8 +33,9 @@
 3. Shutdown and reset the bundle
 	- `docker-compose down -v`
 	- This deletes any volumes that are created for the bundle. On next startup, the MySQL will reimport, thus reverting to the original state. There is no going back if you do this, so make sure you really want to delete all the additional data.
-	- To delete a specific volume, add the volume name after the command. Volume names can be found in the docker-compose.yml
-		- `docker-compose down -v ${VOLUME_NAME}`
+	- To delete a specific volume, use the following command.
+		- `docker volume rm ${NETWORK_NAME}_${VOLUME_NAME}`
+			- To find the full name of a volume, run `docker volume ls`
 	
 ### Deploying a Plugin
 1. A directory called `deploy` will be created. Simply copy your plugin into that directory.

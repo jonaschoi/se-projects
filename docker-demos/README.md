@@ -6,7 +6,7 @@
 ### Requirements
 1. Docker
 2. ~4 GB of drive space
-3. 8 GB of RAM allocated to Docker Desktop
+3. **8 GB of RAM allocated to Docker Desktop**
 4. Docker Hub account
 5. Internet connection that is decent.
 
@@ -54,4 +54,4 @@
 ### Troubleshooting
 Q. I get a "exited with error code 137" and it all shuts down.
 
-A. This error code means that it is trying to allocated memory, but it is unable, due to not having access to more. Set your Docker Desktop to have at least 8 GB of available memory. 
+A. This error code means that it is trying to allocated memory, but it is unable, due to not having access to more. **Set your Docker Desktop to have at least 8 GB of available memory.**

@@ -49,7 +49,7 @@
 	- `rm -f ${PLUGIN_NAME}`
 	
 ### Clearing Caches
-- Cache directories are not persisted in the container and not mapped to directories, so restarting the container will clear the cache.
+- Cache directories are not persisted in the container and not mapped to Docker volumes, so restarting the container will clear both the Tomcat and OSGi caches.
 	
 ### Troubleshooting
 Q. I get a "exited with error code 137" and it all shuts down.

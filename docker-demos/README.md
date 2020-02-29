@@ -32,14 +32,15 @@
 	- `docker-compose down`
 3. Shutdown and reset the bundle
 	- `docker-compose down -v`
-	- This deletes any volumes that are created for the bundle. On next startup, the MySQL will reimport, thus reverting to the original state. There is no going back if you do this, so make sure you really want to delete all the additional data.
+	- **This deletes any volumes that are created for the bundle.** On next startup, the MySQL will reimport, thus reverting to the original state. *There is no going back if you do this, so make sure you really want to delete all the additional data.*
 	- To delete a specific volume, use the following command.
 		- `docker volume rm ${NETWORK_NAME}_${VOLUME_NAME}`
 			- To find the full name of a volume, run `docker volume ls`
 	
-### Deploying a Plugin
-1. A directory called `deploy` will be created. Simply copy your plugin into that directory.
-	- You will need to supply your own license key.
+### Getting Started
+1. Copy a DXP license key into the `feature-set-7.2-sp1/mount/deploy` directory.
+	- If there is none, create one.
+	- This is where plugin hot deployment will occur.
 	
 ### Removing a Plugin
 1. Log into the container. Container names can be found in the docker-compose.yml
@@ -50,6 +51,10 @@
 	
 ### Clearing Caches
 - Cache directories are not persisted in the container and not mapped to Docker volumes, so restarting the container will clear both the Tomcat and OSGi caches.
+
+### Patching the system
+1. Copy the entire zip file of the fixpack or hotfix into `feature-set-7.2-sp1/mount/patching`
+	- Create if necessary.
 	
 ### Troubleshooting
 Q. I get a "exited with error code 137" and it all shuts down.

@@ -2,13 +2,10 @@
 This demo bundle contains the Feature Set Demo built on Liferay DXP 7.2 SP1.
 
 ## Directories Listing
-
 ### elasticsearch
 This directory contains the Dockerfile used to build the Elasticsearch instance used for this demo. **It is not necessary to build this image.** *This is provided for reference.*
-
 ### mount
-This directory contains the mappings to add demo info/data into the bundle. For full explaination, please consult the [Liferay Docker Hub page](https://hub.docker.com/r/liferay/dxp).
-
+This directory contains the mappings to add demo info/data into the bundle. For full explanation, please consult the [Liferay Docker Hub page](https://hub.docker.com/r/liferay/dxp).
 ### mysql
 This directory contains the SQL dump file for the database and the my.cnf used.
 

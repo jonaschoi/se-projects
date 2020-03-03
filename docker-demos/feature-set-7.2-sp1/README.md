@@ -1,13 +1,13 @@
-#Liferay DXP 7.2 SP1 Feature Set
+# Liferay DXP 7.2 SP1 Feature Set
 This demo bundle contains the Feature Set Demo built on Liferay DXP 7.2 SP1.
 
-##Actions to perform before demoing
+## Actions to perform before demoing
 - Deploy and verify any plugins planned on being shown
 - Themes (optional)
 - Change logo
 - Check roles/permissions of users
 
-##Items that can be demo'd with some prep
+## Items that can be demo'd with some prep
 - Themes
 - Multi-sites
 - Roles
@@ -16,7 +16,7 @@ This demo bundle contains the Feature Set Demo built on Liferay DXP 7.2 SP1.
 - Documents & Media
 - Search
 
-##Baseline Demo Script
+## Baseline Demo Script
 1. Theme types
 - Show responsive nature
 	- Highlight how the page layout changes to be reflective of the size and nature of the interaction (mouse/keyboard vs finger)

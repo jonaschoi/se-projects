@@ -6,6 +6,7 @@ This demo bundle contains the Feature Set Demo built on Liferay DXP 7.2 SP1.
 - Themes (optional)
 - Change logo
 - Check roles/permissions of users
+- SalesForce Demo credentials
 
 ## Items that can be demo'd with some prep
 - Themes
@@ -15,6 +16,14 @@ This demo bundle contains the Feature Set Demo built on Liferay DXP 7.2 SP1.
 - Workflow
 - Documents & Media
 - Search
+- Graphs/Dashboarding
+
+## Included plugins
+- Fjord Theme
+- Westeros Bank Theme
+- Porygon Theme
+- Billboard Graph Fragments
+- Salesforce Demo Portlet
 
 ## Baseline Demo Script
 1. Theme types
@@ -69,3 +78,11 @@ This demo bundle contains the Feature Set Demo built on Liferay DXP 7.2 SP1.
 - Discuss Roles/Permissions in relation to search
 - If asked, talk about underlying search technology of Elasticsearch
 	- Also can do Solr, for now
+	
+## Items that can be demo'd with much more prep
+- Elasticsearch
+	- Synonyms
+	- Search tuning
+- Microservices
+- Integrations
+- Themes with corporate colors.

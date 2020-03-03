@@ -17,7 +17,7 @@ services:
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
   mysql:
-    image: jonaschoi/fs72sp1_mysql:latest
+    image: mysql:5.7.29
     container_name: mysql
     networks:
       - fs72sp1
@@ -27,14 +27,15 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: fs72sp1
     volumes:
-      - ./mysql/config/:/docker-entrypoint-initdb.d
+      - ./mysql/config/fs72sp1.sql:/docker-entrypoint-initdb.d/fs72sp1.sql
+      - ./mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
       - mysql:/var/lib/mysql
   tomcat:
     image: liferay/dxp:7.2.10.1-sp1
     container_name: tomcat
-#    depends_on:
-#      - elasticsearch
-#      - mysql
+    depends_on:
+      - elasticsearch
+      - mysql
     environment:
       LIFERAY_RETRY_PERIOD_JDBC_PERIOD_ON_PERIOD_STARTUP_PERIOD_DELAY: 10
       LIFERAY_RETRY_PERIOD_JDBC_PERIOD_ON_PERIOD_STARTUP_PERIOD_MAX_PERIOD_RETRIES: 10

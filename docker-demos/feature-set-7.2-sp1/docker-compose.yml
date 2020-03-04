@@ -1,8 +1,9 @@
 version: "3.7"
 services:
   elasticsearch:
-    image: jonaschoi/fs72sp1_elasticsearch:latest
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.1
     container_name: elasticsearch
+    entrypoint: /usr/share/elasticsearch/docker-entrypoint-es-plugins.sh
     environment: 
       ES_JAVA_OPTS: "-Xms512m -Xmx512m"
     networks:
@@ -15,7 +16,10 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - elasticsearch:/usr/share/elasticsearch/data
+      - ./elasticsearch/config/docker-entrypoint-es-plugins.sh:/usr/share/elasticsearch/docker-entrypoint-es-plugins.sh
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - elasticsearch-data:/usr/share/elasticsearch/data
+      - elasticsearch-plugins:/usr/share/elasticsearch/plugins
   mysql:
     image: mysql:5.7.29
     container_name: mysql
@@ -56,7 +60,8 @@ networks:
   fs72sp1:
     name: fs72sp1
 volumes:
-  elasticsearch:
+  elasticsearch-data:
+  elasticsearch-plugins:
   liferay-data:
   liferay-osgi-configs:
   liferay-osgi-marketplace:

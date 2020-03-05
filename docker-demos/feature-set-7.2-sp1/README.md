@@ -3,11 +3,11 @@ This demo bundle contains the Feature Set Demo built on Liferay DXP 7.2 SP1.
 
 ## Directories Listing
 ### elasticsearch
-This directory contains the script to install the necessary Elasticsearch plugins and elasticsearch.yml used.
+This directory contains the script to install the necessary Elasticsearch plugins and elasticsearch.yml used. *If only running the demo bundle, there is no need to modify this directory.*
 ### mount
-This directory contains the mappings to add demo info/data into the bundle. For full explanation, please consult the [Liferay Docker Hub page](https://hub.docker.com/r/liferay/dxp).
+This directory contains the mappings to add demo info/data into the bundle. Add plugins that need to be persisted across restarts and volume clears according to the directory structure here. For full explanation, please consult the [Liferay DXP Docker Hub page](https://hub.docker.com/r/liferay/dxp).
 ### mysql
-This directory contains the SQL dump file for the database and the my.cnf used.
+This directory contains the SQL dump file for the database and the my.cnf used. *If only running the demo bundle, there is no need to modify this directory.*
 
 ## Actions to perform before demoing
 - Deploy and verify any plugins planned on being shown

@@ -62,6 +62,7 @@ Q. I get a "exited with error code 137" and it all shuts down.
 A. This error code means that it is trying to allocated memory, but it is unable, due to not having access to more. **Set your Docker Desktop to have at least 8 GB of available memory.**
 
 Q. I get an error like this when starting the Elasticsearch image.
+
 `ERROR: for elasticsearch  Cannot start service elasticsearch: OCI runtime create failed: container_linux.go:346: starting container process caused "exec: \"/usr/share/elasticsearch/docker-entrypoint-es-plugins.sh\": permission denied": unknown`
 
 A. If you haven't pulled the latest update, you should. If that doesn't work, add the execute permission on the docker-entrypoint-es-plugins.sh file.

@@ -39,7 +39,6 @@
 	
 ### Getting Started
 1. Copy a DXP license key into the `feature-set-7.2-sp1/mount/deploy` directory.
-	- If there is none, create one.
 	- This is where plugin hot deployment will occur.
 	
 ### Removing a Plugin

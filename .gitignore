@@ -1,6 +1,6 @@
 .gradle
 /build/
-**/deploy/*
+**/deploy/*.xml
 *.log
 
 # Ignore Gradle GUI config

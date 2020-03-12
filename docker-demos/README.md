@@ -8,29 +8,35 @@
 2. ~4 GB of drive space
 3. **8 GB of RAM allocated to Docker Desktop**
 4. Docker Hub account
-5. Internet connection that is decent.
+5. Internet connection that is decent
 
 ### Steps to setup and start up
-1. Login to Docker Hub via CLI (Not necessary at this point)
+1. Login to Docker Hub via CLI (Not necessary at this point).
 	- `docker login`
 2. Check out this repos, and navigate to the directory of the bundle (i.e. feature-set-7.2-sp1).
-	- Or download and unzip
-3. Start with Docker Compose in detached mode
+	- Or download and unzip.
+3. Start with Docker Compose in detached mode.
 	- `docker-compose up -d`
+	- If you want to start just one specific container, add the container name at the end of the command. Container names can be found in the docker-compose.yml.
+		- `docker-compose up -d ${CONTAINER_NAME}`
+		- Docker containers can be set to be dependent on other containers. Starting a container without starting the dependencies will start them as well. Container dependencies can be found in docker-compose.yml.
 	- This will download the images if they are not present. Good internet is highly recommended.
-4. View Docker Logs
+4. View Docker Logs.
 	- `docker-compose logs -f`
 	- If you want to view logs for just one specific container, add the container name at the end of the command. Container names can be found in the docker-compose.yml
 		- `docker-compose logs -f ${CONTAINER_NAME}`
-5. When logs show startup complete, go to the URL
+5. When logs show startup complete, go to the URL.
 	- `http://localhost:8080`
 	
 ### Steps to Shutdown
-1. Exit the logs
+1. Exit the logs.
 	- `Ctrl+C` or `CMD+C`
-2. Shutdown running Docker Image
+2. Shutdown running Docker Image.
 	- `docker-compose down`
-3. Shutdown and reset the bundle
+	- If you want to stop just one specific container, use the following command. Container names can be found in the docker-compose.yml.
+		- `docker-compose stop ${CONTAINER_NAME}`
+			- Note that is is `stop` not `down`.
+3. Shutdown and reset the bundle.
 	- `docker-compose down -v`
 	- **This deletes any volumes that are created for the bundle.** On next startup, the MySQL will reimport, thus reverting to the original state. *There is no going back if you do this, so make sure you really want to delete all the additional data.*
 	- To delete a specific volume, use the following command.
@@ -42,11 +48,13 @@
 	- This is where plugin hot deployment will occur.
 	
 ### Removing a Plugin
-1. Log into the container. Container names can be found in the docker-compose.yml
+1. Log into the container. Container names can be found in the docker-compose.yml.
 	- `docker exec -it ${CONTAINER_NAME} bash`
 2. Navigate to the osgi/modules or osgi/marketplace directory. You will be in the `/opt/liferay` directory.
 3. Delete the specific module.
 	- `rm -f ${PLUGIN_NAME}`
+4. To exit from the container command line, use the command belowe. This is the same terminology as SSH sessions.
+	- `exit`
 	
 ### Clearing Caches
 - Cache directories are not persisted in the container and not mapped to Docker volumes, so restarting the container will clear both the Tomcat and OSGi caches.

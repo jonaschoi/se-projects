@@ -60,8 +60,21 @@
 - Cache directories are not persisted in the container and not mapped to Docker volumes, so restarting the container will clear both the Tomcat and OSGi caches.
 
 ### Patching the system
-1. Copy the entire zip file of the fixpack or hotfix into `feature-set-7.2-sp1/mount/patching`
+1. Shut down the container.
+2. Copy the entire zip file of the hotfix into `feature-set-7.2-sp1/mount/patching`
 	- Create if necessary.
+	- You may need to add the patching files zip. Patching files can be downloaded from the Fix Pack section of the [Liferay DXP 7.2 Downloads](https://help.liferay.com/hc/en-us/categories/360001749912). Add the zip to the `patching` directory.
+3. Start the system.
+
+### Updating Docker Image For Liferay DXP
+Patching procedures can be used to update the Docker image by applying fixpacks. Howeve, the baseline Docker image can be changed to update Liferay DXP to have the latest fixpack.
+
+1. Stop system.
+2. Refer to the the [Liferay DXP Docker Hub page](https://hub.docker.com/r/liferay/dxp/tags) and find the tag for the fixpack.
+3. Edit `docker-compose.yml` and look at `image` in the `tomcat` section.
+	- Line 38: image: liferay/dxp:7.2.10-dxp-4
+4. Start the system.
+
 	
 ### Troubleshooting
 Q. I get a "exited with error code 137" and it all shuts down.
@@ -74,3 +87,9 @@ Q. I get an error like this when starting the Elasticsearch image.
 
 A. If you haven't pulled the latest update, you should. If that doesn't work, add the execute permission on the docker-entrypoint-es-plugins.sh file.
 - `chmod +x feature-set-7.2-sp1/elasticsearch/config/docker-entrypoint-es-plugins.sh`
+
+Q. I applied a fixpack/hotfix and on startup, I get a giant error.
+
+`SEVERE [main] org.apache.catalina.core.StandardContext.listenerStart Exception sending context initialized event to listener instance of class [com.liferay.portal.spring.context.PortalContextLoaderListener]`
+
+A. You need to add the patching files to the `patching` directory. See above.

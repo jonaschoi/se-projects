@@ -35,7 +35,7 @@ services:
       - ./mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
       - mysql:/var/lib/mysql
   tomcat:
-    image: liferay/dxp:7.2.10.1-sp1
+    image: liferay/dxp:7.2.10-dxp-4
     container_name: tomcat
     depends_on:
       - elasticsearch

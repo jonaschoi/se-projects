@@ -72,7 +72,7 @@ Patching procedures can be used to update the Docker image by applying fixpacks.
 1. Stop system.
 2. Refer to the the [Liferay DXP Docker Hub page](https://hub.docker.com/r/liferay/dxp/tags) and find the tag for the fixpack.
 3. Edit `docker-compose.yml` and look at `image` in the `tomcat` section.
-	- Line 38: image: liferay/dxp:7.2.10-dxp-4
+	- Line 38: `image: liferay/dxp:7.2.10-dxp-4`
 4. Start the system.
 
 	

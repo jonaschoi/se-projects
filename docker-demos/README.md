@@ -70,6 +70,8 @@
 Patching procedures can be used to update the Docker image by applying fixpacks. Howeve, the baseline Docker image can be changed to update Liferay DXP to have the latest fixpack.
 
 1. Stop system.
+	- You must revert the containers back to basic install.
+	- `docker-compose down -v`
 2. Refer to the the [Liferay DXP Docker Hub page](https://hub.docker.com/r/liferay/dxp/tags) and find the tag for the fixpack.
 3. Edit `docker-compose.yml` and look at `image` in the `tomcat` section.
 	- Line 38: `image: liferay/dxp:7.2.10-dxp-4`

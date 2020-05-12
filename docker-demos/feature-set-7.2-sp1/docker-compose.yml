@@ -9,8 +9,8 @@ services:
     networks:
       - fs72sp1
     ports:
-      - 9200:9200
-      - 9300:9300
+      - 9400:9200
+      - 9500:9300
     ulimits:
       memlock:
         soft: -1
@@ -35,7 +35,7 @@ services:
       - ./mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
       - mysql:/var/lib/mysql
   tomcat:
-    image: liferay/dxp:7.2.10-dxp-4
+    image: liferay/dxp:7.2.10-sp2
     container_name: tomcat
     depends_on:
       - elasticsearch

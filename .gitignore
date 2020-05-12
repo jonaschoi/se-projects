@@ -3,6 +3,8 @@
 **/deploy/*.xml
 *.log
 
+/backup/
+
 # Ignore Gradle GUI config
 gradle-app.setting
 

@@ -1,6 +1,6 @@
 [{
-    "label": "Alberta",
-        "value": "AB"
+    "name": "Alberta",
+        "abbreviation": "AB"
 }, {
     "name": "Alabama",
         "abbreviation": "AL"

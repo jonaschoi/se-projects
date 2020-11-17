@@ -31,7 +31,7 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: fs72sp2v3
     volumes:
-      - ./mysql/config/fs72sp1.sql:/docker-entrypoint-initdb.d/fs72sp1.sql
+      - ./mysql/config/fs72sp2v3.sql:/docker-entrypoint-initdb.d/fs72sp2v3.sql
       - ./mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
       - mysql:/var/lib/mysql
   tomcat:
@@ -57,7 +57,7 @@ services:
       - liferay-osgi-modules:/opt/liferay/osgi/modules
       - liferay-osgi-war:/opt/liferay/osgi/war
 networks:
-  fs72sp1:
+  fs72sp2v3:
     name: fs72sp2v3
 volumes:
   elasticsearch-data:

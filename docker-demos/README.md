@@ -8,6 +8,7 @@
 
 ### Creating the Bundles
 [Dockerizing a Liferay Bundle, Part 1](https://liferay.dev/blogs/-/blogs/dockerizing-a-liferay-bundle-part-1)
+
 [Dockerizing a Liferay Bundle, Part 2](https://liferay.dev/blogs/-/blogs/dockerizing-a-liferay-bundle-part-2)
 
 ### Requirements

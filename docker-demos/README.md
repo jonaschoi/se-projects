@@ -6,6 +6,10 @@
 ## Feature Set 7.2 SP2 V3
 - This contains the docker-compose and SQL file necessary for the improved version of the Liferay DXP 7.2 Feature Set bundle.
 
+### Creating the Bundles
+[Dockerizing a Liferay Bundle, Part 1](https://liferay.dev/blogs/-/blogs/dockerizing-a-liferay-bundle-part-1)
+[Dockerizing a Liferay Bundle, Part 2](https://liferay.dev/blogs/-/blogs/dockerizing-a-liferay-bundle-part-2)
+
 ### Requirements
 1. Docker
 2. ~4 GB of drive space

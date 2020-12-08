@@ -11,6 +11,8 @@
 
 [Dockerizing a Liferay Bundle, Part 2](https://liferay.dev/blogs/-/blogs/dockerizing-a-liferay-bundle-part-2)
 
+[Migrating Your Bundle to DXP Cloud, Part 3](https://liferay.dev/blogs/-/blogs/migrating-your-bundle-to-dxp-cloud-part-3-)
+
 ### Requirements
 1. Docker
 2. ~4 GB of drive space

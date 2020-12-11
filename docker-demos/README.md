@@ -105,3 +105,7 @@ Q. I applied a fixpack/hotfix and on startup, I get a giant error.
 `SEVERE [main] org.apache.catalina.core.StandardContext.listenerStart Exception sending context initialized event to listener instance of class [com.liferay.portal.spring.context.PortalContextLoaderListener]`
 
 A. You need to add the patching files to the `patching` directory. See above.
+
+Q. It's not reading the my.cnf OR it's throwing this message "mysql: [Warning] World-writable config file '/etc/mysql/conf.d/my.cnf' is ignored." OR the Liferay start up logs say "Invalid string"
+
+A. Remove the write permission from my.cnf, with something like "chmod 0444 my.cnf"

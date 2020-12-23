@@ -13,6 +13,8 @@
 
 [Migrating Your Bundle to DXP Cloud, Part 3](https://liferay.dev/blogs/-/blogs/migrating-your-bundle-to-dxp-cloud-part-3-)
 
+[Local Work with DXP Cloud, Part 4](https://liferay.dev/blogs/-/blogs/local-work-with-dxp-cloud)
+
 ### Requirements
 1. Docker
 2. ~4 GB of drive space

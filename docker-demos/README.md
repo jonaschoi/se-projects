@@ -6,6 +6,9 @@
 ## Feature Set 7.2 SP2 V3
 - This contains the docker-compose and SQL file necessary for the improved version of the Liferay DXP 7.2 Feature Set bundle.
 
+## Feature Set 7.3
+- This contains the docker-compose and SQL file necssary for the Liferay 7.3 Feature Set bundle. This bundle has been upgraded from DXP 7.2.
+
 ### Creating the Bundles
 [Dockerizing a Liferay Bundle, Part 1](https://liferay.dev/blogs/-/blogs/dockerizing-a-liferay-bundle-part-1)
 

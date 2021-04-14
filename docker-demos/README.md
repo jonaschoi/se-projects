@@ -18,6 +18,8 @@
 
 [Local Work with DXP Cloud, Part 4](https://liferay.dev/blogs/-/blogs/local-work-with-dxp-cloud)
 
+[Backing Up Your DXP Cloud Environments, Part 5](https://liferay.dev/blogs/-/blogs/backing-up-your-dxp-cloud-environments)
+
 ### Requirements
 1. Docker
 2. ~4 GB of drive space

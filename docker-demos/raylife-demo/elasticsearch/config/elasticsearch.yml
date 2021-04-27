@@ -1,0 +1,8 @@
+cluster.name: LiferayElasticsearchCluster
+#cluster.initial_master_nodes: 1
+node.name: LiferayElasticsearchCluster
+network.host: 0.0.0.0
+discovery.zen.minimum_master_nodes: 1
+discovery.type: single-node
+bootstrap.memory_lock: true
+#xpack.security.enabled: false

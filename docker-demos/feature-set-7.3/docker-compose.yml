@@ -21,7 +21,7 @@ services:
       - elasticsearch-data:/usr/share/elasticsearch/data
       - elasticsearch-plugins:/usr/share/elasticsearch/plugins
   mysql:
-    image: mysql:5.7.29
+    image: mysql:5.7.34
     container_name: mysql
     networks:
       - fs73up1
@@ -35,7 +35,7 @@ services:
       - ./mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
       - mysql:/var/lib/mysql
   tomcat:
-    image: liferay/dxp:7.3.10-ga1
+    image: liferay/dxp:7.3.10-dxp-1
     container_name: tomcat
     depends_on:
       - elasticsearch

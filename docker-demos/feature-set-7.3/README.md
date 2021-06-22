@@ -31,6 +31,7 @@ This directory contains the SQL dump file for the database and the my.cnf used. 
 - SE Toolbox Fragments
 - Salesforce Demo Portlet
 - Commerce (enabled)
+- Sharepoint SOAP Connector
 
 ## 7.3 Features to show
 - Stylebooks

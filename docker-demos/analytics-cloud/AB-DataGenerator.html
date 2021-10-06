@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>A/B Testing Data Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        input[type="number"] {
+            max-width: 80px;
+        }
+
+        #variants-metrics input[type="number"] {
+            max-width: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" style="max-width: 640px">
+        <div class="row">
+            <div class="col-sm-12 mt-4 mb-4">
+                <h4 class="text-center mb-4">A/B Testing Data Generator</h4>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label><b>Elasticsearch URL</b></label>
+
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="elasticsearch-url" value="http://localhost:9200">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-primary" onclick="testElasticsearch()">Test Connection</button>
+                                </div>
+                            </div>
+
+                            <small class="text-sm" id="elasticsearch-output"></small>
+                        </div>
+
+                        <div id="experimentIdContainer" class="form-group" style="display: none;">
+                            <label><b>Experiment ID</b></label>
+
+                            <small class="text-secondary">You can get it from the experiment url</small>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="experiment-id" name="experimentId">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-primary" onclick="fetchExperiment()">Fetch Experiment</button>
+                                </div>
+                            </div>
+
+                            <small id="experiment-fetch-output"></small>
+                        </div>
+
+
+                        <div id="setupExperiment" style="display: none;">
+                            <hr>
+
+                            <div class="form-group">
+                                <label><b>Set started date</b></label>
+
+                                <div class="input-group">
+                                    <input class="form-control" type="date" id="started-date">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-primary" onclick="updateStartedDate()">Update</button>
+                                    </div>
+                                </div>
+
+                                <small class="text-sm" id="started-date-output"></small>
+                            </div>
+
+                            <hr>
+
+                            <div class="form-group">
+                                <label><b>Set status to</b></label>
+
+                                <div class="form-inline align-items-center mb-3">
+                                    <select class="custom-select mr-sm-3" id="status" onchange="checkSelectedStatus()">
+                                        <option value="RUNNING">Running</option>
+                                        <option value="FINISHED_WINNER">Finished Winner</option>
+                                        <option value="FINISHED_NO_WINNER">Finished No Winner</option>
+                                    </select>
+
+                                    <span id="winner-variant-section" style="display: none;">
+                                        Winner variant
+                                        <select class="custom-select mx-sm-3" id="winner-variant"></select>
+                                    </span>
+
+                                    <button class="btn btn-primary" onclick="updateExperimentStatus()">Update</button>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="status-update-portal">
+                                    <label class="form-check-label" for="status-update-portal">Update portal @ localhost:8080</label>
+                                    <small> (You may need to <a target="_blank" href="https://portal.liferay.dev/docs/7-2/deploy/-/knowledge_base/d/configuring-cors">enable CORS</a>)</small>
+                                </div>
+
+                                <small class="text-sm" id="update-status-output"></small>
+                            </div>
+
+                            <hr>
+
+                            <div>
+                                <div class="form-inline">
+                                    <label><b>Variants daily sessions</b></label>
+    
+                                    <div class="form-group">
+                                        <label>Sessions per day</label>
+                                        <input class="form-control mx-sm-3" type="number" min="0" max="10000" id="sessions-per-day" value="100" />
+                                        <label>Variation</label>
+                                        <input class="form-control mx-sm-3" type="number" min="0" max="50" id="sessions-variation" value="10" />
+    
+                                        <button class="btn btn-primary" onclick="generateSessions()">Generate</button>
+                                    </div>
+                                </div>
+
+                                <small class="text-sm" id="generate-sessions-output"></small>
+                            </div>
+
+                            <hr>
+
+                            <div>
+                                <label><b>Variants metrics</b></label>
+        
+                                <ul class="list-group" id="variants-metrics"></ul>
+                            </div>
+
+                            <div class="form-inline mt-3">
+                                <div class="form-group">
+                                    <label>Estimated days left</label>
+                                    <input class="form-control mx-sm-3" type="number" id="estimated-days-left" min="0" max="100" value="1" />
+                                    <label>Completion (%)</label>
+                                    <input class="form-control mx-sm-3" type="number" id="completion" min="0" max="100" value="99" />
+    
+                                    <button class="btn btn-primary" onclick="generateMetrics()">Generate</button>
+                                </div>
+                            </div>
+
+                            <small class="text-sm" id="generate-metrics-output"></small>
+
+                            <hr>
+
+                            <div class="form-group">
+                                <label><b>Reset Experiment Data</b></label>
+                                <div>
+                                    <button class="btn btn-danger" onclick="resetExperiment()">Reset</button>
+                                    <div id="reset-output"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const experimentIndex = 'local_osbasahfaroinfo_experiments/experiments';
+        const pagesIndexWithoutType = 'local_osbasahcerebroinfo_pages';
+        const pagesIndex = pagesIndexWithoutType + '/pages';
+        let elasticsearchURL = 'http://localhost:9200';
+        let experiment;
+        let experimentId;
+
+        function testElasticsearch() {
+            elasticsearchURL = document.getElementById('elasticsearch-url').value;
+            const experimentIdContainer = document.getElementById('experimentIdContainer');
+
+            fetch(elasticsearchURL)
+                .then(response => response.json())
+                .then(r => {
+                    setOutput('elasticsearch-output', "Success", false);
+                    experimentIdContainer.style.display = 'block';
+                })
+                .catch(e => {
+                    setOutput('elasticsearch-output', "Error: " + e, true);
+                    experimentIdContainer.style.display = 'none';
+                });
+        }
+
+        function fetchExperiment() {
+            experimentId = document.getElementById('experiment-id').value;
+            const setupExperiment = document.getElementById('setupExperiment');
+            const message = document.getElementById('experiment-fetch-output');
+
+            fetch(`${elasticsearchURL}/${experimentIndex}/${experimentId}`)
+                .then(response => response.json())
+                .then(r => {
+                    if (r.error) {
+                        setOutput('experiment-fetch-output', "Error: " + r.error.reason, true);
+                        console.error(r);
+                    }
+                    else if (r.found) {
+                        experiment = r._source;
+                        setOutput('experiment-fetch-output', `Experiment found: <b>${experiment.name}</b>`, false);
+
+                        if (experiment.startedDate) {
+                            document.getElementById('started-date').value = experiment.startedDate.slice(0, 10);
+                        }
+                        renderMetricsVariants();
+
+                        setupExperiment.style.display = 'block';
+                    } else {
+                        setOutput('experiment-fetch-output', "Experiment not found", true);
+                    }
+                })
+                .catch(e => {
+                    setOutput('experiment-fetch-output', "Error: " + e, true);
+                    setupExperiment.style.display = 'none';
+                });
+        }
+
+        function renderMetricsVariants() {
+            var variantsSection = document.getElementById('variants-metrics');
+            variantsSection.innerHTML = '';
+
+            for (v of experiment.dxpVariants) {
+                variantsSection.insertAdjacentHTML('beforeend',
+                    `<li class="list-group-item">
+                        <label><strong>${v.dxpVariantName}</strong></label>
+                        <input type="hidden" name="variantId" value="${v.dxpVariantId}">
+                        <input type="hidden" name="control" value="${v.control}">
+
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Median (%)</label>
+                                    <input class="form-control" type="number" name="median" value="50" min="0">
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Interval (%)</label>
+                                    <input class="form-control" type="number" name="interval" value="5" min="0">
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Prob. to Win (%)</label>
+                                    <input class="form-control" type="number" name="probwin" value="50">
+                                </div>
+                            </div>
+                        </div>
+                    </li>`);
+            }
+        }
+
+        function resetExperiment() {
+            if(!confirm("Are you sure? This operation cannot be reverted.")) {
+                return;
+            }
+
+            fetch(`${elasticsearchURL}/${pagesIndex}/_delete_by_query`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ "query": { "term": { "experimentId": experimentId } } })
+            })
+                .then(response => response.json())
+                .then(r => {
+                    if (r.error) {
+                        document.getElementById('reset-output').innerHTML = "Error: " + r.error.reason;
+                        console.log(r);
+                    } else {
+                        fetch(`${elasticsearchURL}/${experimentIndex}/${experimentId}/_update`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ "doc": { "metrics": [] } })
+                        })
+                            .then(response => response.json())
+                            .then(r => {
+                                if (r.error) {
+                                    document.getElementById('reset-output').innerHTML = "Error: " + r.error.reason;
+                                    console.log(r);
+                                } else {
+                                    document.getElementById('reset-output').innerHTML = "Success";
+                                }
+                            });
+                    }
+                })
+                .catch(e => document.getElementById('experiment-fetch-output').innerHTML = "Error: " + e);
+        }
+
+        function checkSelectedStatus() {
+            var section = document.getElementById('winner-variant-section');
+
+            if (document.getElementById('status').value != "FINISHED_WINNER") {
+                section.style = "display: none";
+                return;
+            }
+
+            section.style = "display: inline-block";
+
+            var select = document.getElementById('winner-variant');
+            select.innerHTML = '';
+
+            for (v of experiment.dxpVariants) {
+                if (v.control) continue;
+
+                var option = document.createElement("option");
+                option.text = v.dxpVariantName;
+                option.value = v.dxpVariantId;
+                select.appendChild(option);
+            }
+        }
+
+        function updateStartedDate() {
+            var startedDate = document.getElementById('started-date').value;
+            if (!startedDate) {
+                return;
+            }
+
+            startedDate += "T12:00:00.000Z";
+
+            fetch(`${elasticsearchURL}/${experimentIndex}/${experimentId}/_update`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ "doc": { "startedDate": startedDate } })
+            })
+            .then(response => response.json())
+            .then(r => handleElasticsearchResponse(r, 'started-date-output', () => { experiment.startedDate = startedDate; }));
+        }
+
+        function updateExperimentStatus() {
+            const status = document.getElementById('status').value;
+            let body = {
+                "doc": {
+                    "status": status,
+                    "winnerDXPVariantId": null,
+                    "finishedDate": null
+                }
+            };
+
+            if (status == "FINISHED_WINNER") {
+                body.doc.winnerDXPVariantId = document.getElementById('winner-variant').value;
+                body.doc.finishedDate = new Date().toISOString();
+            } else if (status == "FINISHED_NO_WINNER") {
+                body.doc.finishedDate = new Date().toISOString();
+            }
+
+            fetch(`${elasticsearchURL}/${experimentIndex}/${experimentId}/_update`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+            .then(response => response.json())
+            .then(r => handleElasticsearchResponse(r, 'update-status-output', () => {
+                if(document.getElementById('status-update-portal').checked) {
+                    body = {
+                        "status": body.doc.status,
+                        "winnerVariantId": body.doc.winnerDXPVariantId
+                    };
+
+                    fetch(`http://localhost:8080/o/segments-asah/v1.0/experiments/${experimentId}/status`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Basic ' + btoa("test@liferay:test")
+                        },
+                        body: JSON.stringify(body)
+                    })
+                    .then(response => response.text())
+                    .then(r => {
+                        if (r.includes("Invalid")) {
+                            setOutput('update-status-output', "Error: " + r, true);
+                        }
+                    })
+                    .catch(e => {
+                        setOutput('update-status-output', "Error: " + e, true);
+                    });
+                }
+            }));
+        }
+
+        function generateSessions() {
+            var sessionsPerDay = document.getElementById('sessions-per-day').value;
+            var variation = document.getElementById('sessions-variation').value;
+
+            var date = new Date(experiment.startedDate);
+            var today = new Date();
+            var content = '';
+
+            date.setHours(12, 0, 0, 0);
+            today.setHours(12, 0, 0, 0);
+
+            while (date <= today) {
+                for (v of experiment.dxpVariants) {
+                    var sessions = getRandom(sessionsPerDay * v.trafficSplit / 100, variation);
+
+                    for (var i = 0; i < sessions; i++) {
+                        var id = uuidv4();
+                        content += `{ "index" : { "_index" : "${pagesIndexWithoutType}", "_type" : "pages", "_id" : "${id}" } }`;
+                        content += '\n';
+                        content += `{ "dataSourceId": "${experiment.dataSourceId}", "eventDate": "${date.toISOString()}", "experienceId": "${experiment.dxpExperienceId}", "experimentId": "${experimentId}", "id": "${id}", "individualId": "${uuidv4()}", "primaryKey": "${uuidv4()}", "sessionId": "${uuidv4()}", "title": "Page Title", "url": "http://example.com", "userId": "${uuidv4()}", "variantId": "${v.dxpVariantId}", "views": 1 }`;
+                        content += '\n';
+                    }
+                }
+
+                date = addDays(date, 1);
+            }
+
+            fetch(`${elasticsearchURL}/${pagesIndex}/_bulk`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: content
+            })
+            .then(response => response.json())
+            .then(r => handleElasticsearchResponse(r, 'generate-sessions-output'));
+        }
+
+        function generateMetrics() {
+            var variantsSection = document.getElementById('variants-metrics');
+            var estimatedDaysLeft = document.getElementById('estimated-days-left').value;
+            var completion = document.getElementById('completion').value;
+            var date = new Date(experiment.startedDate);
+            var today = new Date();
+            var content = '';
+
+            date.setHours(12, 0, 0, 0);
+            today.setHours(12, 0, 0, 0);
+
+            metrics = { doc : { metrics : [] }};
+
+            var elapsedDays = 0;
+            while (date <= today) {
+                metric = {
+                    processedDate: date.toISOString(),
+                    confidenceLevel: `0.${experiment.confidenceLevel}`,
+                    estimatedDaysLeft: estimatedDaysLeft,
+                    elapsedDays: elapsedDays++,
+                    completion: completion,
+                    variantMetrics: []
+                };
+
+                var controlMedian = 0;
+
+                for (node of variantsSection.childNodes) {
+                    var variantId = node.querySelector("input[name='variantId']").value;
+                    var control = node.querySelector("input[name='control']").value == 'true';
+                    var median = parseInt(node.querySelector("input[name='median']").value);
+                    var interval = node.querySelector("input[name='interval']").value;
+                    var probwin = node.querySelector("input[name='probwin']").value;
+                    var improvement = 0
+
+                    if (control) {
+                        controlMedian = median;
+                    } else {
+                        improvement = (median - controlMedian) / controlMedian * 100;
+
+                        if (experiment.goal.metric == "BOUNCE_RATE") {
+                            improvement = -improvement;
+                        }
+                    }
+
+                    metric.variantMetrics.push({
+                        confidenceInterval: [
+                            Math.floor(median - (median * interval / 100)),
+                            Math.floor(median + (median * interval / 100)) ],
+                        probabilityToWin: parseFloat(probwin),
+                        dxpVariantId: variantId,
+                        median: median,
+                        control: control,
+                        improvement: control ? 0 : improvement 
+                    })
+                }
+
+                metrics.doc.metrics.push(metric)
+                date = addDays(date, 1);
+            }
+
+            fetch(`${elasticsearchURL}/${experimentIndex}/${experimentId}/_update`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(metrics)
+            })
+            .then(response => response.json())
+            .then(r => handleElasticsearchResponse(r, 'generate-metrics-output'));
+        }
+
+        function getRandom(value, variation) {
+            value = parseInt(value);
+            variation = parseInt(variation);
+            var min = Math.floor(value - (value * variation / 100));
+            var max = Math.floor(value + (value * variation / 100));
+
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        function uuidv4() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function addDays(date, days) {
+            var result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
+
+        function handleElasticsearchResponse(response, outputElement, successFunction) {
+            if (response.error) {
+                setOutput(outputElement, "Error: " + response.error.reason, true);
+                console.log(r);
+            } else {
+                setOutput(outputElement, "Success", false);
+                if (successFunction) successFunction();
+            }
+        }
+
+        function setOutput(id, msg, isError) {
+            const output = document.getElementById(id);
+
+            output.innerHTML = msg;
+            output.classList.add(isError ? "text-danger" : "text-success");
+            output.classList.remove(isError ? "text-success" : "text-danger");
+        }
+    </script>
+</body>
+
+</html>

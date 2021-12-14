@@ -8,8 +8,8 @@ services:
             - LCP_ENGINE_ELASTICSEARCH_SERVER_IP=analytics-elasticsearch
             - LCP_PROJECT_ID=local
             - OSB_ASAH_BACKEND_ADMIN_REST_CONTROLLER_ENABLED=true
-            - OSB_ASAH_BACKEND_URL=http://localhost:8082
-            - OSB_ASAH_PUBLISHER_URL=http://localhost:8082
+            - OSB_ASAH_BACKEND_URL=http://172.18.160.1:8082
+            - OSB_ASAH_PUBLISHER_URL=http://172.18.160.1:8082
             - OSB_FARO_FRONTEND_URL=http://analytics-frontend:8080
             - OSB_ASAH_SECURITY_TOKEN=9ZPgFSdEntvRPjgRcstSgkUCBzKyjz4hbuaGbdW9h3BHcJbZLuuSqd6BpFLhRErS
             - SPRING_PROFILES_ACTIVE=prod
@@ -22,6 +22,7 @@ services:
     analytics-elasticsearch:
         container_name: analytics-elasticsearch
         environment:
+            - discovery.type=single-node
             - ES_JAVA_OPTS=-Xms512m -Xmx512m
             - http.cors.allow-origin=*
             - http.cors.enabled=true
@@ -40,7 +41,7 @@ services:
         container_name: analytics-frontend
         environment:
             - FARO_DEFAULT_WE_DEPLOY_KEY=local.lfr.cloud
-            - FARO_URL=http://localhost:8081
+            - FARO_URL=http://172.18.160.1:8081
             - OSB_ASAH_BACKEND_URL=http://analytics-backend:8080
             - OSB_ASAH_PUBLISHER_URL=http://analytics-backend:8080
         image: liferay/com-liferay-osb-faro:latest-demo

@@ -55,7 +55,7 @@
 	- `docker-compose down`
 	- If you want to stop just one specific container, use the following command. Container names can be found in the docker-compose.yml.
 		- `docker-compose stop ${CONTAINER_NAME}`
-			- Note that is is `stop` not `down`.
+			- Note that it is `stop` not `down`.
 3. Shutdown and reset the bundle.
 	- `docker-compose down -v`
 	- **This deletes any volumes that are created for the bundle.** On next startup, the MySQL will reimport, thus reverting to the original state. *There is no going back if you do this, so make sure you really want to delete all the additional data.*

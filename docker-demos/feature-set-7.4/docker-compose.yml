@@ -1,0 +1,75 @@
+version: "3.7"
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.9.0
+    container_name: elasticsearch
+    entrypoint: /usr/share/elasticsearch/docker-entrypoint-es-plugins.sh
+    environment: 
+      ES_JAVA_OPTS: "-Xms512m -Xmx1024m"
+    networks:
+      - fs74up3
+    ports:
+      - 9400:9200
+      - 9500:9300
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./elasticsearch/config/docker-entrypoint-es-plugins.sh:/usr/share/elasticsearch/docker-entrypoint-es-plugins.sh
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - elasticsearch-data:/usr/share/elasticsearch/data
+      - elasticsearch-plugins:/usr/share/elasticsearch/plugins
+  mysql:
+    image: mysql:5.7.34
+    container_name: mysql
+    networks:
+      - fs74up3
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: fs74up3
+    volumes:
+      - ./mysql/config/fs74up3.sql:/docker-entrypoint-initdb.d/fs74up3.sql
+      - ./mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
+      - mysql:/var/lib/mysql
+  tomcat:
+    image: liferay/dxp:7.4.13-u9
+    container_name: tomcat
+    depends_on:
+      - elasticsearch
+      - mysql
+    environment:
+      LIFERAY_DISABLE_TRIAL_LICENSE: "true"
+      LIFERAY_RETRY_PERIOD_JDBC_PERIOD_ON_PERIOD_STARTUP_PERIOD_DELAY: 10
+      LIFERAY_RETRY_PERIOD_JDBC_PERIOD_ON_PERIOD_STARTUP_PERIOD_MAX_PERIOD_RETRIES: 10
+      LIFERAY_JVM_OPTS: "-Xms2560m -Xmx4096m -XX:MaxNewSize=1536m -XX:MaxMetaspaceSize=1024m -XX:MetaspaceSize=512m -XX:NewSize=1536m -XX:SurvivorRatio=7"
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_DRIVER_UPPERCASEC_LASS_UPPERCASEN_AME: "com.mysql.cj.jdbc.Driver"
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_PASSWORD: "password"
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_USERNAME: "root"
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL: "jdbc:mysql://mysql/fs74up3?characterEncoding=UTF-8&dontTrackOpenResources=true&holdResultsOpenOverStatementClose=true&useFastDateParsing=false&useUnicode=true&serverTimezone=GMT"      
+    networks: 
+      - fs74up3
+    ports: 
+      - 8080:8080
+      - 127.0.0.1:11311:11311
+    volumes:
+      - ./mount:/mnt/liferay
+      - liferay-data:/opt/liferay/data
+      - liferay-osgi-configs:/opt/liferay/osgi/configs
+      - liferay-osgi-marketplace:/opt/liferay/osgi/marketplace
+      - liferay-osgi-modules:/opt/liferay/osgi/modules
+      - liferay-osgi-war:/opt/liferay/osgi/war
+networks:
+  fs74up3:
+    name: fs74up3
+volumes:
+  elasticsearch-data:
+  elasticsearch-plugins:
+  liferay-data:
+  liferay-osgi-configs:
+  liferay-osgi-marketplace:
+  liferay-osgi-modules:
+  liferay-osgi-war:
+  mysql:

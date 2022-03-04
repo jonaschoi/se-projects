@@ -1,5 +1,5 @@
 # Liferay DXP 7.4 Feature Set
-This demo bundle contains the Feature Set Demo built on Liferay DXP 7.3 SP1.
+This demo bundle contains the Feature Set Demo built on Liferay DXP 7.4 Update 9.
 
 ## Directories Listing
 ### elasticsearch
@@ -29,13 +29,15 @@ This directory contains the SQL dump file for the database and the my.cnf used. 
 ## Included plugins
 - Billboard Graph Fragments
 - SE Toolbox Fragments
-- Salesforce Demo Portlet
+- Salesforce Demo Portlet (Need 7.4 version)
 - Commerce (enabled)
-- Sharepoint SOAP Connector
 
-## 7.3 Features to show
-- Stylebooks
-- App Builder
+## 7.4 Features to show
+- Objects
+- Remote Apps
+- Collections Pages
+- Dialect Theme
+- Stylebooks (7.3)
 - Content Mapping (7.2)
 
 ## Baseline Demo Script

@@ -9,6 +9,12 @@ This directory contains the mappings to add demo info/data into the bundle. Add 
 ### mysql
 This directory contains the SQL dump file for the database and the my.cnf used. *If only running the demo bundle, there is no need to modify this directory.*
 
+## Changing 7.4 Update releases
+Liferay DXP 7.4 went to a rolling release cycle with frequent bundle updates. Newer updates can be used by changing the version in docker-compose.yml.
+
+### Important note
+When changing release version, clear volumes before starting the new version.
+
 ## Actions to perform before demoing
 - Deploy and verify any plugins planned on being shown
 - Themes (optional)
